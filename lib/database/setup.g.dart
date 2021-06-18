@@ -21,13 +21,14 @@ class SetupAdapter extends TypeAdapter<Setup> {
       fields[1] as String,
       fields[2] as int,
       fields[3] as bool,
+      fields[4] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, Setup obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.isFirstTime)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class SetupAdapter extends TypeAdapter<Setup> {
       ..writeByte(2)
       ..write(obj.color)
       ..writeByte(3)
-      ..write(obj.isLobitos);
+      ..write(obj.isLobitos)
+      ..writeByte(4)
+      ..write(obj.fontSize);
   }
 
   @override

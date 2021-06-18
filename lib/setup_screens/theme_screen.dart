@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hci_project/database/setup.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/provider.dart';
 
-import '../theme.dart';
+import '../globals.dart';
 
 class ThemeScreen extends StatefulWidget {
   @override
@@ -25,18 +23,25 @@ class _ThemeScreenState extends State<ThemeScreen> {
   }
 
   Widget _buildChooseTheme() {
-    final setup = Hive.box("settings").getAt(0) as Setup;
-    final bool isEn = setup.lang == "en";
+    final setup = Hive.box("set").getAt(0) as Setup;
+    final bool isEn = setup.lang.contains("en");
+
+    final bool isTrit = setup.color == 0xFFffef5350;
+    final bool isProt = setup.color == 0xFFFFBC02D;
+    final bool isDef = setup.color == 0xFF2196f3;
 
     return Column(
       children: [
-        Text(
-          isEn ? "Select your preferred theme" : "Hola",          //TODO SPANISH
-          textAlign: TextAlign.center,
+        GestureDetector(
+          onTap: () => speak(isEn ? "Select your preferred theme" : "Seleccione su tema preferido"),
+          child: Text(
+            isEn ? "Select your preferred theme" : "Seleccione su tema preferido",
+            textAlign: TextAlign.center,
 
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: setup.fontSize //was 18
+            )
           )
         ),
 
@@ -46,54 +51,91 @@ class _ThemeScreenState extends State<ThemeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             SizedBox(width: 20),
-            ElevatedButton(
-              child: Text(isEn ? "TRITANOPIA" : "Trit spanish", style: TextStyle(color: Colors.black)),
-              style: ButtonStyle(
-                minimumSize: MaterialStateProperty.all<Size>(Size.square(100)),
-                shape: MaterialStateProperty.all<CircleBorder>(CircleBorder()),
-                backgroundColor: MaterialStateProperty.all(Color(0xFFffef5350))
-              ),
-              onPressed: () => setState(() {
-                Hive.box("settings").putAt(0, Setup(setup.isFirstTime, setup.lang, 0xFFffef5350, setup.isLobitos));
-                setSystemChrome();
-              })
+
+            Column(
+              children: [
+                ElevatedButton(
+                  child: Container(),
+                  style: ButtonStyle(
+                    minimumSize: MaterialStateProperty.all<Size>(Size.square(isTrit ? 110 : 100)),
+                    shape: MaterialStateProperty.all<CircleBorder>(CircleBorder()),
+                    backgroundColor: MaterialStateProperty.all(Color(0xFFffef5350)),
+                    //side: MaterialStateProperty.all(BorderSide(color: isTrit ? Colors.lightBlue : Colors.transparent, width: 3))
+                  ),
+                  onPressed: () => setState(() {
+                    speak(isEn ? "Tritanopia" : "Tritanopia");
+                    Hive.box("set").putAt(0, Setup(setup.isFirstTime, setup.lang, 0xFFffef5350, setup.isLobitos, setup.fontSize));
+                    setSystemChrome();
+                  })
+                ),
+
+                SizedBox(height: 5),
+                GestureDetector(
+                  onTap: () => speak(isEn ? "TRITANOPIA" : "TRITANOPÍA"),
+                  child: Text(isEn ? "TRITANOPIA" : "TRITANOPÍA", style: TextStyle(fontWeight: FontWeight.bold))
+                )
+              ]
             ),
 
-            ElevatedButton(
-              child: Text(isEn ? "PROTANOPIA" : "Prot spanish", style: TextStyle(color: Colors.black)),
-              style: ButtonStyle(
-                minimumSize: MaterialStateProperty.all<Size>(Size.square(100)),
-                shape: MaterialStateProperty.all<CircleBorder>(CircleBorder()),
-                backgroundColor: MaterialStateProperty.all(Color(0xFFFFBC02D))
-              ),
-              onPressed: () => setState(() {
-                Hive.box("settings").putAt(0, Setup(setup.isFirstTime, setup.lang, 0xFFFFBC02D, setup.isLobitos));
-                setSystemChrome();
-              })
+            Column(
+              children: [
+                ElevatedButton(
+                  child: Container(),
+                  style: ButtonStyle(
+                    minimumSize: MaterialStateProperty.all<Size>(Size.square(isProt ? 110 : 100)),
+                    shape: MaterialStateProperty.all<CircleBorder>(CircleBorder()),
+                    backgroundColor: MaterialStateProperty.all(Color(0xFFFFBC02D)),
+                    //side: MaterialStateProperty.all(BorderSide(color: isProt ? Colors.purple : Colors.transparent, width: 3))
+                  ),
+                  onPressed: () => setState(() {
+                    speak(isEn ? "Protanopia" : "Protanopia");
+                    Hive.box("set").putAt(0, Setup(setup.isFirstTime, setup.lang, 0xFFFFBC02D, setup.isLobitos, setup.fontSize));
+                    setSystemChrome();
+                  })
+                ),
+
+                SizedBox(height: 5),
+                GestureDetector(
+                  onTap: () => speak(isEn ? "PROTANOPIA" : "PROTANOPIA"),
+                  child: Text(isEn ? "PROTANOPIA" : "PROTANOPIA", style: TextStyle(fontWeight: FontWeight.bold))
+                )
+              ]
             ),
 
-            SizedBox(width: 20),
+            SizedBox(width: 20)
             ]
         ),
 
-        ElevatedButton(
-          child: Text(isEn ? "DEFAULT" : "Def spanish", style: TextStyle(color: Colors.black)),
-          onPressed: () => setState(() {
-            Hive.box("settings").putAt(0, Setup(setup.isFirstTime, setup.lang, 0xFF2196f3, setup.isLobitos));
-            setSystemChrome();
-          }),
-          style: ButtonStyle(
-            minimumSize: MaterialStateProperty.all<Size>(Size.square(100)),
-            shape: MaterialStateProperty.all<CircleBorder>(CircleBorder()),
-            backgroundColor: MaterialStateProperty.all(Color(0xFF2196f3))
-          )
+        Column(
+          children: [
+            ElevatedButton(
+              child: Container(),
+              onPressed: () => setState(() {
+                speak(isEn ? "Default" : "Defecto");
+                Hive.box("set").putAt(0, Setup(setup.isFirstTime, setup.lang, 0xFF2196f3, setup.isLobitos, setup.fontSize));
+                setSystemChrome();
+              }),
+              style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all<Size>(Size.square(isDef ? 110 : 100)),
+                shape: MaterialStateProperty.all<CircleBorder>(CircleBorder()),
+                backgroundColor: MaterialStateProperty.all(Color(0xFF2196f3)),
+                //side: MaterialStateProperty.all(BorderSide(color: isDef ? Colors.green : Colors.transparent, width: 3))
+              )
+            ),
+
+            SizedBox(height: 5),
+            GestureDetector(
+              onTap: () => speak(isEn ? "DEFAULT" : "DEFECTO"),
+              child: Text(isEn ? "DEFAULT" : "DEFECTO", style: TextStyle(fontWeight: FontWeight.bold))
+            )
+          ],
         )
       ]
     );
   }
 
   void setSystemChrome() {
-    final setup = Hive.box("settings").getAt(0) as Setup;
+    final setup = Hive.box("set").getAt(0) as Setup;
 
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarBrightness: Brightness.light,

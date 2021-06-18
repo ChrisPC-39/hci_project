@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hci_project/database/setup.dart';
 import 'package:hive/hive.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+
+import '../globals.dart';
 
 class LanguageScreen extends StatefulWidget {
   @override
@@ -9,6 +11,8 @@ class LanguageScreen extends StatefulWidget {
 }
 
 class _LanguageScreenState extends State<LanguageScreen> {
+  FlutterTts tts = FlutterTts();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,16 +25,20 @@ class _LanguageScreenState extends State<LanguageScreen> {
   }
 
   Widget _buildChooseLang() {
-    final setup = Hive.box("settings").getAt(0) as Setup;
+    final setup = Hive.box("set").getAt(0) as Setup;
+    final isEn = setup.lang.contains("en");
 
     return Column(
       children: [
-        Text(
-          setup.lang == "en" ? "Select your preferred language" : "Hola mundo",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18
+        GestureDetector(
+          onTap: () => speak(isEn ? "Select your preferred language" : "Seleccione su idioma preferido"),
+          child: Text(
+            isEn ? "Select your preferred language" : "Seleccione su idioma preferido",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: setup.fontSize //was 18
+            )
           )
         ),
 
@@ -43,61 +51,52 @@ class _LanguageScreenState extends State<LanguageScreen> {
             Column(
               children: [
                 ElevatedButton(
-                  child: Image(image: AssetImage('assets/uk.png'), width: 90, height: 90),
-                  //child: Icon(Icons.ac_unit, size: 35, color: Colors.black),
+                  child: Image(image: AssetImage('assets/uk.png'), width: isEn ? 100 : 90, height: isEn ? 100 : 90),
                   style: ButtonStyle(
                     minimumSize: MaterialStateProperty.all<Size>(Size.square(60)),
                     shape: MaterialStateProperty.all<CircleBorder>(CircleBorder()),
                     backgroundColor: MaterialStateProperty.all(Colors.white)
                   ),
                   onPressed: () => setState(() {
-                    Hive.box("settings").putAt(0, Setup(setup.isFirstTime, "en", setup.color, setup.isLobitos));
+                    speak(isEn ? "English" : "Inglesa");
+                    Hive.box("set").putAt(0, Setup(setup.isFirstTime, "en", setup.color, setup.isLobitos, setup.fontSize));
                   })
                 ),
 
                 Container(height: 20),
-                Text("ENGLISH", style: TextStyle(fontWeight: FontWeight.bold))
+                GestureDetector(
+                  onTap: () => speak(isEn ? "English" : "Inglesa"),
+                  child: Text("ENGLISH", style: TextStyle(fontWeight: FontWeight.bold))
+                )
               ]
             ),
 
             Column(
               children: [
                 ElevatedButton(
-                  child: Image(image: AssetImage('assets/spain.png'), width: 90, height: 90),
+                  child: Image(image: AssetImage('assets/spain.png'), width: !isEn ? 100 : 90, height: !isEn ? 100 : 90),
                   style: ButtonStyle(
                     minimumSize: MaterialStateProperty.all<Size>(Size.square(60)),
                     shape: MaterialStateProperty.all<CircleBorder>(CircleBorder()),
                     backgroundColor: MaterialStateProperty.all(Colors.white)
                   ),
                   onPressed: () => setState(() {
-                    Hive.box("settings").putAt(0, Setup(setup.isFirstTime, "es", setup.color, setup.isLobitos));
+                    speak(isEn ? "Spanish" : "Espanol");
+                    Hive.box("set").putAt(0, Setup(setup.isFirstTime, "es", setup.color, setup.isLobitos, setup.fontSize));
                   })
                 ),
 
                 Container(height: 20),
-                Text("ESPANOL", style: TextStyle(fontWeight: FontWeight.bold))
+                GestureDetector(
+                  onTap: () => speak(isEn ? "Spanish" : "Espanol"),
+                  child: Text("ESPANOL", style: TextStyle(fontWeight: FontWeight.bold))
+                )
               ]
             ),
 
             SizedBox(width: 20),
           ]
-        ),
-
-        // ElevatedButton(
-        //   child: Icon(
-        //     Icons.phone_android,
-        //     size: 35,
-        //     color: Colors.white
-        //   ),
-        //   onPressed: () => setState(() {}),
-        //   style: ButtonStyle(
-        //     minimumSize: MaterialStateProperty.all<Size>(Size.square(60)),
-        //     shape: MaterialStateProperty.all<CircleBorder>(CircleBorder()),
-        //     backgroundColor: MaterialStateProperty.resolveWith<Color>(
-        //       (Set<MaterialState> states) { return Colors.white; }
-        //     )
-        //   )
-        // )
+        )
       ]
     );
   }

@@ -16,5 +16,8 @@ class Setup {
   @HiveField(3)
   final bool isLobitos;
 
-  Setup(this.isFirstTime, this.lang, this.color, this.isLobitos);
+  @HiveField(4)
+  final double fontSize;
+
+  Setup(this.isFirstTime, this.lang, this.color, this.isLobitos, this.fontSize);
 }
