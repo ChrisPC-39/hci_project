@@ -54,7 +54,7 @@ class _MapWidgetState extends State<MapWidget> {
                   child: Align(
                     alignment: widget.pinAlignment,
                     child: Visibility(
-                      visible: select.selectedMap,
+                      visible: select.pinnedMap,
                       child: Icon(Icons.pin_drop, color: Colors.red[400])
                     )
                   )

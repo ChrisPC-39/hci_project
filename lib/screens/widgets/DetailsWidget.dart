@@ -23,7 +23,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
             padding: EdgeInsets.all(15),
             child: TextField(
               maxLines: null,
-              controller: ctrl.detailsController,
+              controller: controller.details,
               decoration: InputDecoration(
                 border: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
                 labelText: isEn ? "Details" : "Detalles"

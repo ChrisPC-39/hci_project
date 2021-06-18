@@ -30,7 +30,7 @@ class _WebMainScreenState extends State<WebMainScreen> {
   void writtenAddress(String text) {
     setState(() {
       select.filledForms[0] = true;
-      select.selectedAddress = true;
+      select.writtenAddress = true;
       select.canSendReport = true;
       speak(text);
     });
@@ -39,7 +39,7 @@ class _WebMainScreenState extends State<WebMainScreen> {
   void pinnedMap() {
     setState(() {
       select.filledForms[0] = true;
-      select.selectedMap = true;
+      select.pinnedMap = true;
       select.canSendReport = true;
       pinAlignment = Alignment(random.nextDouble() * (-1.0 - 1.0) + 1.0, random.nextDouble() * (-1.0 - 1.0) + 1.0);
     });
@@ -53,7 +53,7 @@ class _WebMainScreenState extends State<WebMainScreen> {
   }
 
   void selectGarbage(int index, String title) {
-    setState(() => select.checkedTrash[index] = !select.checkedTrash[index]!);
+    setState(() => select.checkedTrash[index] = !select.checkedTrash[index]);
     speak(title);
   }
 
@@ -186,7 +186,7 @@ class _WebMainScreenState extends State<WebMainScreen> {
 
             onTap: () {
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              final String msg = select.selectedAddress || select.selectedMap
+              final String msg = select.writtenAddress || select.pinnedMap
                   ? isEn ? "Report sent!" : "¡Informe enviado!"
                   : isEn ? "Fill in the location!" :"¡Complete la ubicación!";
 
@@ -199,17 +199,19 @@ class _WebMainScreenState extends State<WebMainScreen> {
                 )
               ));
 
-              setState(() {
-                select.filledForms.fillRange(0, select.filledForms.length, false);
-                select.checkedTrash.fillRange(0, select.checkedTrash.length, false);
-                select.canSendReport = false;
-                select.selectedAddress = false;
-                select.selectedImage = false;
-                select.selectedMap = false;
+              if(select.writtenAddress || select.pinnedMap) {
+                setState(() {
+                  select.filledForms.fillRange(0, select.filledForms.length, false);
+                  select.checkedTrash.fillRange(0, select.checkedTrash.length, false);
+                  select.canSendReport = false;
+                  select.writtenAddress = false;
+                  select.selectedImage = false;
+                  select.pinnedMap = false;
 
-                ctrl.detailsController.text = "";
-                ctrl.addressController.text = "";
-              });
+                  controller.details.text = "";
+                  controller.address.text = "";
+                });
+              }
             }
           )
         ]
@@ -219,11 +221,9 @@ class _WebMainScreenState extends State<WebMainScreen> {
 
   Color? matchColor(int index) {
     select.canSendReport = true;
-    if(index == 0 && (select.selectedAddress || select.selectedMap)) return matchColorSettings(300);
-    //if(index == 1 && selectedImage) return matchColorSettings(400);
-    //if(index == 2 && select.selectedMap) return matchColorSettings(300);
+    if(index == 0 && (select.writtenAddress || select.pinnedMap)) return matchColorSettings(300);
 
-    if(!select.selectedAddress && !select.selectedMap)
+    if(!select.writtenAddress && !select.pinnedMap)
       select.canSendReport = false;
 
     return index % 2 != 0 ? Colors.white : Colors.grey[200];
@@ -333,197 +333,13 @@ class _WebMainScreenState extends State<WebMainScreen> {
     );
   }
 
-  // Widget _buildExtraDetails() {
-  //   final setup = Hive.box("set").getAt(0) as Setup;
-  //   final bool isEn = setup.lang.contains("en");
-  //
-  //   return Align(
-  //     alignment: Alignment(0.0, -1.0),
-  //     child: Padding(
-  //       padding: EdgeInsets.all(15),
-  //       child: TextField(
-  //         maxLines: null,
-  //         controller: extraDetailsController,
-  //         decoration: InputDecoration(
-  //           border: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
-  //           labelText: isEn ? "Details" : "Detalles"
-  //         )
-  //       )
-  //     )
-  //   );
-  // }
-
-  // Widget _buildSelectTrash() {
-  //   final setup = Hive.box("set").getAt(0) as Setup;
-  //   final bool isEn = setup.lang.contains("en");
-  //
-  //   return Padding(
-  //     padding: EdgeInsets.all(15),
-  //     child: ListView(
-  //       children: [
-  //         _buildCheckboxTile(0, !isEn ? "Plástico" : "Plastic"),
-  //         _buildCheckboxTile(1, !isEn ? "Cartón" : "Carton"),
-  //         _buildCheckboxTile(2, !isEn ? "Medicamentos" : "General waste"),
-  //         _buildCheckboxTile(3, !isEn ? "Metal" : "Metal"),
-  //         _buildCheckboxTile(4, !isEn ? "Medicamentos" : "Drugs"),
-  //         _buildCheckboxTile(5, !isEn ? "Otro" : "Other"),
-  //       ]
-  //     )
-  //   );
-  // }
-  //
-  // Widget _buildCheckboxTile(int index, String title) {
-  //   final setup = Hive.box("set").getAt(0) as Setup;
-  //
-  //   return CheckboxListTile(
-  //     title: GestureDetector(
-  //       onTap: () {
-  //         setState(() => select.checkedTrash[index] = !select.checkedTrash[index]!);
-  //         speak(title);
-  //       },
-  //       child: Text(title, style: TextStyle(fontSize: setup.fontSize + 5))
-  //     ),
-  //     value: select.checkedTrash[index],
-  //     onChanged: (value) => setState(() {
-  //       select.checkedTrash[index] = value;
-  //     })
-  //   );
-  // }
-
-  // Widget _buildTakePhoto() {
-  //   final setup = Hive.box("set").getAt(0) as Setup;
-  //   final bool isEn = setup.lang.contains("en");
-  //
-  //   return Padding(
-  //     padding: EdgeInsets.all(15),
-  //     child: ListView(
-  //       children: [
-  //         Container(
-  //           height: 50,
-  //           child: ElevatedButton(
-  //             style: ButtonStyle(
-  //               backgroundColor: MaterialStateProperty.all(Color(setup.color))
-  //             ),
-  //             onPressed: () => setState(() => selectedImage = true),
-  //             child: Center(child: GestureDetector(
-  //               onTap: () => speak(isEn ? "Select a photo" : "Seleccione una foto"),
-  //               child: Text(
-  //                 isEn ? "Select a photo" : "Seleccione una foto",
-  //                 style: TextStyle(fontSize: setup.fontSize)),
-  //             ))
-  //           )
-  //         ),
-  //
-  //         Container(height: 15),
-  //
-  //         Visibility(
-  //           visible: selectedImage,
-  //           child: Image.network("https://picsum.photos/id/1052/600/500")
-  //         ),
-  //
-  //         Visibility(
-  //           visible: !selectedImage,
-  //           child: Container(width: 600, height: 500, child: Placeholder())
-  //         )
-  //       ]
-  //     )
-  //   );
-  // }
-
   Widget _buildAddress() {
-    //final setup = Hive.box("set").getAt(0) as Setup;
-    // final bool isEn = setup.lang.contains("en");
-    //
-    // final bool isTrit = setup.color == 0xFFffef5350;
-    // final bool isProt = setup.color == 0xFFFFBC02D;
-    // final bool isDef = setup.color == 0xFF2196f3;
-
     return Padding(
       padding: EdgeInsets.all(15),
       child: ListView(
         children: [
           AddressWidget(callback: writtenAddress),
           MapWidget(callback: () => pinnedMap, size: 600, pinAlignment: pinAlignment),
-          //AddressWidget(callback: () => writtenAddress),
-
-          // SizedBox(height: 15),
-          //
-          // Container(
-          //   height: 50,
-          //   child: ElevatedButton(
-          //     style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(setup.color))),
-          //     onPressed: () => setState(() {
-          //       select.selectedAddress = true;
-          //       select.canSendReport = true;
-          //       select.filledForms[0] = true;
-          //     }),
-          //     child: Center(child: GestureDetector(
-          //       onTap: () => speak(isEn ? "Confirm address" : "Dirección de confismo"),
-          //       child: Text(
-          //         isEn ? "Confirm address" : "Dirección de confismo",
-          //         style: TextStyle(fontSize: setup.fontSize)),
-          //     ))
-          //   )
-          // ),
-
-          // Align(
-          //   alignment: Alignment(-1.0, 0.0),
-          //   child: Padding(
-          //     padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-          //     child: Column(
-          //       children: [
-          //         Container(
-          //           height: 400,
-          //           width: 400,
-          //           child: Stack(
-          //             children: [
-          //               GestureDetector(
-          //                 child: Image(image: AssetImage(
-          //                   setup.isLobitos ? isDef ? "assets/lobitos.png" : isTrit ? "assets/lobitos-trit.png" : "assets/lobitos-prot.png"
-          //                                   : isDef ? "assets/piedritas.png" : isTrit ? "assets/piedritas-trit.png" : "assets/piedritas-prot.png" ),
-          //                   width: 600,
-          //                   height: 600
-          //                 ),
-          //                 onTap: () => setState(() {
-          //                   select.selectedAddress = true;
-          //                   select.canSendReport = true;
-          //                   select.filledForms[0] = true;
-          //                 })
-          //               ),
-          //
-          //               Container(
-          //                 height: 400,
-          //                 width: 400,
-          //                 child: Align(
-          //                   alignment: Alignment(random.nextDouble() * (-1.0 - 1.0) + 1.0, random.nextDouble() * (-1.0 - 1.0) + 1.0),
-          //                   child: Visibility(
-          //                     visible: select.selectedAddress,
-          //                     child: Icon(Icons.pin_drop, color: Colors.red[400])
-          //                   )
-          //                 ),
-          //               )
-          //             ]
-          //           )
-          //         ),
-          //
-          //         Container(height: 15),
-          //
-          //         TextButton(
-          //           onPressed: () => setState(() {
-          //             select.selectedAddress = true;
-          //             select.canSendReport = true;
-          //             select.filledForms[0] = true;
-          //           }),
-          //           child: Text(
-          //             !isEn ? "Establecer desde las coordenadas actuales" : "Set from current coordinates",
-          //             textAlign: TextAlign.center,
-          //             style: TextStyle(fontSize: setup.fontSize)
-          //           )
-          //         )
-          //       ]
-          //     )
-          //   )
-          // )
         ]
       )
     );

@@ -12,6 +12,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 Future<void> main() async {
+  ///This bit is just to initialize the database. It's not important to understand.
   WidgetsFlutterBinding.ensureInitialized();
   Directory appDocumentDirectory;
 
@@ -35,15 +36,16 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of the application.
+  ///This widget is the root of the application.
+  ///The "build" function starts rendering everything on the screen
   @override
   Widget build(BuildContext context) {
     final setupBox = Hive.box("set");
     final setup = setupBox.getAt(0) as Setup;
 
-    //This SystemChrome is here to change the colors of the nav bar and status bar
-    //on Android phones (the bars that show back/home/menu buttons and the
-    //bar that shows time, battery, internet, etc
+    ///This SystemChrome is here to change the colors of the nav bar and status bar
+    ///on Android phones (the bars that show back/home/menu buttons and the
+    ///bar that shows time, battery, internet, etc
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarBrightness: Brightness.light,
       statusBarColor: Colors.blue,
@@ -51,14 +53,9 @@ class MyApp extends StatelessWidget {
       systemNavigationBarColor: Colors.blue
     ));
 
-    if (setup.isFirstTime) {
-      return SetupScreen();
-    } else {
-      if (kIsWeb && MediaQuery.of(context).size.width > 700) {
-        return WebMainScreen();
-      } else {
-        return PhoneMainScreen();
-      }
-    }
+    if (setup.isFirstTime) return SetupScreen();
+    else if (kIsWeb && MediaQuery.of(context).size.width > 700)
+      return WebMainScreen();
+    else return PhoneMainScreen();
   }
 }

@@ -24,7 +24,7 @@ class _AddressWidgetState extends State<AddressWidget> {
         Align(
           alignment: Alignment(0.0, -1.0),
           child: TextField(
-            controller: ctrl.addressController,
+            controller: controller.address,
             onChanged: (value) {},
             decoration: InputDecoration(
               border: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
