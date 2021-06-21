@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hci_project/database/setup.dart';
-import 'package:hci_project/setup_screens/font_size_screen.dart';
-import 'package:hci_project/setup_screens/language_screen.dart';
-import 'package:hci_project/setup_screens/region_screen.dart';
-import 'package:hci_project/setup_screens/theme_screen.dart';
-import 'package:hci_project/setup_screens/tts_screen.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../globals.dart';
+import 'setup_screens/font_size_screen.dart';
+import 'setup_screens/language_screen.dart';
+import 'setup_screens/region_screen.dart';
+import 'setup_screens/theme_screen.dart';
+import 'setup_screens/tts_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override

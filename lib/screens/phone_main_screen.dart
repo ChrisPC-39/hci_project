@@ -76,14 +76,6 @@ class _PhoneMainScreenState extends State<PhoneMainScreen> {
 
     FocusScope.of(context).unfocus();
 
-    select.filledForms.fillRange(0, select.filledForms.length, false);
-    select.checkedTrash.fillRange(0, select.checkedTrash.length, false);
-    select.canSendReport = false;
-    select.pinnedMap = false;
-    select.writtenAddress = false;
-    controller.details.text = "";
-    controller.address.text = "";
-
     final String msg = select.writtenAddress || select.pinnedMap
         ? isEn ? "Report sent!" : "¡Informe enviado!"
         : isEn ? "Fill in the location!" :"¡Complete la ubicación!";
@@ -97,6 +89,14 @@ class _PhoneMainScreenState extends State<PhoneMainScreen> {
         )
       )
     ));
+
+    select.filledForms.fillRange(0, select.filledForms.length, false);
+    select.checkedTrash.fillRange(0, select.checkedTrash.length, false);
+    select.canSendReport = false;
+    select.pinnedMap = false;
+    select.writtenAddress = false;
+    controller.details.text = "";
+    controller.address.text = "";
   }
 
   @override
@@ -164,8 +164,8 @@ class _PhoneMainScreenState extends State<PhoneMainScreen> {
     return AppBar(
       backgroundColor: Color(setup.color),
       title: GestureDetector(
-        onTap: () => speak(isEn ? "Trash Report" : "Informe de basura"),
-        child: Text(isEn ? "Trash Report" : "Informe de basura")
+        onTap: () => speak(isEn ? "Trash Hub" : "Cubo de basura"),
+        child: Text(isEn ? "Trash Hub" : "Cubo de basura")
       ),
       leading: IconButton(
         icon: Icon(Icons.info_outline, size: 30, color: Colors.white),
@@ -273,7 +273,7 @@ class _PhoneMainScreenState extends State<PhoneMainScreen> {
                 isEn ? "REQUIRED" : "REQUERIDO",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: setup.fontSize + 5)),
             )),
-            MapWidget(callback: () => pinnedMap, size: 300, pinAlignment: pinAlignment),
+            MapWidget(callback: () => pinnedMap, size: 600, pinAlignment: pinAlignment),
             AddressWidget(callback: writtenAddress)
         ]
       )

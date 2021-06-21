@@ -40,7 +40,8 @@ class _ArrowForwardButtonState extends State<ArrowForwardButton> {
             ),
         style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
-          backgroundColor: MaterialStateProperty.all(widget.currPage == 1 && select.canSendReport ? Color(setup.color) : Colors.white)
+          backgroundColor: MaterialStateProperty.all(Color(setup.color))
+          //backgroundColor: MaterialStateProperty.all(widget.currPage == 1 && select.canSendReport ? Color(setup.color) : Colors.white)
         ),
         onPressed: () {
           if(widget.currPage == widget.targetPage) widget.callback(0);

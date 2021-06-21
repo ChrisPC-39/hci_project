@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hci_project/database/setup.dart';
+import 'package:hive/hive.dart';
 
 class ArrowBackButton extends StatefulWidget {
   final int currPage;
@@ -13,6 +15,8 @@ class ArrowBackButton extends StatefulWidget {
 class _ArrowBackButtonState extends State<ArrowBackButton> {
   @override
   Widget build(BuildContext context) {
+    final setup = Hive.box("set").getAt(0) as Setup;
+
     return AnimatedOpacity(
       opacity: widget.currPage > 0 ? 1 : 0,
       duration: Duration(milliseconds: 500),
@@ -29,7 +33,7 @@ class _ArrowBackButtonState extends State<ArrowBackButton> {
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
             ),
-            backgroundColor: MaterialStateProperty.all(Colors.white)
+            backgroundColor: MaterialStateProperty.all(Color(setup.color))
           ),
           onPressed: () {
             if (widget.currPage > 0) widget.callback(widget.currPage - 1);

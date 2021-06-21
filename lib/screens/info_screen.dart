@@ -52,6 +52,27 @@ class _InfoScreenState extends State<InfoScreen> {
                 children: [
                   GestureDetector(
                     onTap: () => speak(isEn
+                        ? "Contact us"
+                        : "Contacta con nosotros"),
+                    child: Text(isEn
+                        ? "Contact us"
+                        : "Contacta con nosotros",
+                      style: TextStyle(fontSize: setup.fontSize + 10, fontWeight: FontWeight.bold)),
+                  ),
+                  Container(height: 5),
+                  GestureDetector(
+                    onTap: () => speak(isEn ? "Phone: +51123456789" : "Teléfono: +51123456789"),
+                    child: Text(isEn ? "Phone: +51123456789" : "Teléfono: +51123456789", style: TextStyle(fontSize: setup.fontSize + 5))
+                  ),
+                  GestureDetector(
+                    onTap: () => speak(isEn ? "Phone: Jirón de la Unión 300 - Jirón Conde de Superunda 141 - Cercado de Lima" : "Habla a: Jirón de la Unión 300 - Jirón Conde de Superunda 141 - Cercado de Lima"),
+                    child: Text(isEn ? "Address: Jirón de la Unión 300 - Jirón Conde de Superunda 141 - Cercado de Lima" : "Habla a: Jirón de la Unión 300 - Jirón Conde de Superunda 141 - Cercado de Lima", style: TextStyle(fontSize: setup.fontSize + 5))
+                  ),
+
+                  Container(height: 25),
+
+                  GestureDetector(
+                    onTap: () => speak(isEn
                         ? "Thank you for helping us keep our environment clean!"
                         : "Gracias por ayudarnos con sostener nuestro ambiente limpio!"),
                     child: Text(isEn

@@ -5,15 +5,15 @@ import 'package:hci_project/screens/phone_main_screen.dart';
 import 'package:hci_project/screens/web_main_screen.dart';
 import 'package:hci_project/screens/widgets/ArrowBackButton.dart';
 import 'package:hci_project/screens/widgets/ArrowForwardButton.dart';
-import 'package:hci_project/setup_screens/font_size_screen.dart';
-import 'package:hci_project/setup_screens/language_screen.dart';
-import 'package:hci_project/setup_screens/region_screen.dart';
-import 'package:hci_project/setup_screens/theme_screen.dart';
-import 'package:hci_project/setup_screens/tts_screen.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../globals.dart';
+import 'setup_screens/font_size_screen.dart';
+import 'setup_screens/language_screen.dart';
+import 'setup_screens/region_screen.dart';
+import 'setup_screens/theme_screen.dart';
+import 'setup_screens/tts_screen.dart';
 
 class SetupScreen extends StatefulWidget {
   @override

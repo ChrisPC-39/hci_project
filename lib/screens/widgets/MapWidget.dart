@@ -34,32 +34,32 @@ class _MapWidgetState extends State<MapWidget> {
         padding: EdgeInsets.fromLTRB(15, 0, 15, 15),
         child: Column(
           children: [
-            Stack(
-              children: [
-                GestureDetector(
-                  onTap: widget.callback(),
-                  child: Image(
-                    height: widget.size,
-                    width: widget.size,
-                    image: AssetImage(setup.isLobitos
-                        ? isDef ? "assets/lobitos.png" : isTrit ? "assets/lobitos-trit.png" : "assets/lobitos-prot.png"
-                        : isDef ? "assets/piedritas.png" : isTrit ? "assets/piedritas-trit.png" : "assets/piedritas-prot.png"
+            Container(
+              height: widget.size - 200,
+              width: widget.size - 100,
+              child: Stack(
+                children: [
+                  GestureDetector(
+                    onTap: widget.callback(),
+                    child: Image(
+                      height: widget.size,
+                      width: widget.size,
+                      image: AssetImage(setup.isLobitos
+                          ? isDef ? "assets/lobitos.png" : isTrit ? "assets/lobitos-trit.png" : "assets/lobitos-prot.png"
+                          : isDef ? "assets/piedritas.png" : isTrit ? "assets/piedritas-trit.png" : "assets/piedritas-prot.png"
+                      )
                     )
-                  )
-                ),
+                  ),
 
-                Container(
-                  height: widget.size - 100,
-                  width: widget.size - 100,
-                  child: Align(
+                  Align(
                     alignment: widget.pinAlignment,
                     child: Visibility(
                       visible: select.pinnedMap,
                       child: Icon(Icons.pin_drop, color: Colors.red[400])
                     )
                   )
-                )
-              ]
+                ]
+              ),
             ),
 
             Container(height: 15),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hci_project/database/setup.dart';
 import 'package:hive/hive.dart';
 
-import '../globals.dart';
+import '../../globals.dart';
 
 class TTSScreen extends StatefulWidget {
   @override
@@ -73,7 +73,8 @@ class _TTSScreenState extends State<TTSScreen> {
             onTap: () => speak(isEn ? "Press on any string of text to listen to it!" : "¡Presiona cualquier cadena de texto para escucharlo!"),
             child: Text(
               isEn ? "Press on any string of text to listen to it!" : "¡Presiona cualquier cadena de texto para escucharlo!",
-              style: TextStyle(fontSize: setup.fontSize)
+              style: TextStyle(fontSize: setup.fontSize),
+              textAlign: TextAlign.center
             )
           )
         )

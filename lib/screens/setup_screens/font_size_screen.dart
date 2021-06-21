@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hci_project/database/setup.dart';
 import 'package:hive/hive.dart';
 
-import '../globals.dart';
+import '../../globals.dart';
 
 class FontSizeScreen extends StatefulWidget {
   @override

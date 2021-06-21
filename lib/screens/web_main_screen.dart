@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:hci_project/screens/widgets/ChooseGarbageWidget.dart';
 import 'package:hci_project/screens/widgets/DetailsWidget.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../globals.dart';
 import 'account_screen.dart';
@@ -29,6 +31,7 @@ class _WebMainScreenState extends State<WebMainScreen> {
 
   void writtenAddress(String text) {
     setState(() {
+      FocusScope.of(context).unfocus();
       select.filledForms[0] = true;
       select.writtenAddress = true;
       select.canSendReport = true;
